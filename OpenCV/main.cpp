@@ -1,20 +1,25 @@
-#include <opencv2/core.hpp>
-#include <opencv2/imgcodecs.hpp>
-#include <opencv2/highgui.hpp>
-#include <iostream>
+#include "opencv2/opencv.hpp"
+
 using namespace cv;
-using namespace std;
-int main(int argc, char** argv)
+
+int main(int, char**)
 {
-	Mat image;
-	image = imread("C:\\opencv\\sources\\samples\\data\\lena.jpg", IMREAD_COLOR); // Read the file
-	if (image.empty()) // Check for invalid input
-	{
-		cout << "Could not open or find the image" << std::endl;
+	VideoCapture cap(0); // open the default camera
+	if (!cap.isOpened())  // check if we succeeded
 		return -1;
+
+	Mat edges;
+	namedWindow("edges", 1);
+	for (;;)
+	{
+		Mat frame;
+		cap >> frame; // get a new frame from camera
+		cvtColor(frame, edges, COLOR_BGR2GRAY);
+		GaussianBlur(edges, edges, Size(7, 7), 1.5, 1.5);
+		Canny(edges, edges, 0, 30, 3);
+		imshow("edges", edges);
+		if (waitKey(30) >= 0) break;
 	}
-	namedWindow("Display window", WINDOW_AUTOSIZE); // Create a window for display.
-	imshow("Display window", image); // Show our image inside it.
-	waitKey(0); // Wait for a keystroke in the window
+	// the camera will be deinitialized automatically in VideoCapture destructor
 	return 0;
 }
