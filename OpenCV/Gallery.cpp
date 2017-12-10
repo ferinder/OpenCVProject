@@ -5,9 +5,9 @@
 Gallery::Gallery()
 {
 	cv::namedWindow("Gallery", CV_WINDOW_NORMAL);
-	fileList = Gallery::getFileList();
-	fileListIter = fileList.begin();
-	picture = cv::imread(*fileListIter, CV_LOAD_IMAGE_COLOR);
+	this->fileList = this->getFileList();
+	this->fileListIter = this->fileList.begin();
+	this->picture = cv::imread(*fileListIter, CV_LOAD_IMAGE_COLOR);
 	Gallery::viewPicture();
 }
 
@@ -15,17 +15,6 @@ Gallery::Gallery()
 Gallery::~Gallery()
 {
 	cv::destroyWindow("Gallery");
-
-	std::vector<int> v;
-	for (int i = -3; i < 9; ++i) {
-		v.push_back(i);
-	}
-	// wypisujemy co drugi element wektora za pomoc¹ pêtli u¿ywaj¹cej iteratorów
-	std::cout << "vector: ";
-	for (auto pos = v.begin(); pos < v.cend() && std::next(pos) < v.cend(); pos += 2) {
-		std::cout << *pos << ' ';
-	}
-	std::cout << std::endl << std::endl;
 }
 
 void Gallery::viewPicture()
@@ -62,23 +51,23 @@ std::vector<std::string> Gallery::getFileList()
 void Gallery::changePicture(bool direction)
 {
 	if (direction) {
-		if (fileListIter != std::prev(fileList.end())) {
-			fileListIter = std::next(fileListIter);
+		if (this->fileListIter != std::prev(this->fileList.end())) {
+			this->fileListIter = std::next(this->fileListIter);
 		}
 		else {
-			fileListIter = fileList.begin();
+			this->fileListIter = this->fileList.begin();
 		}
 	}
 	else {
-		if (fileListIter != fileList.begin())	{
-			fileListIter = std::prev(fileListIter);
+		if (this->fileListIter != this->fileList.begin())	{
+			this->fileListIter = std::prev(this->fileListIter);
 		}
 		else {
-			fileListIter = std::prev(fileList.end());
+			this->fileListIter = std::prev(this->fileList.end());
 		}
 	}
-	picture = cv::imread(*fileListIter, CV_LOAD_IMAGE_COLOR);
-	Gallery::viewPicture();
+	this->picture = cv::imread(*this->fileListIter, CV_LOAD_IMAGE_COLOR);
+	this->viewPicture();
 }
 
 void Gallery::zoomPicture()
@@ -87,4 +76,11 @@ void Gallery::zoomPicture()
 
 void Gallery::moveZoomWindow(double xDirection, double yDirection)
 {
+}
+
+void Gallery::printFileList()
+{
+	for (auto it : this->fileList) {
+		std::cout << it << std::endl;
+	}
 }

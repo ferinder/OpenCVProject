@@ -22,9 +22,7 @@ int main(int, char**)
 	//}
 	// the camera will be deinitialized automatically in VideoCapture destructor
 	Gallery galeria = Gallery::Gallery();
-	for (auto it : galeria.fileList) {
-		std::cout << it << std::endl;
-	}
+	galeria.printFileList();
 	int keyPressed;
 	do {
 		keyPressed = cv::waitKey(0);
