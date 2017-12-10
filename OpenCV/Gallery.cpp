@@ -1,16 +1,14 @@
 #include "Gallery.h"
 
 
-
 Gallery::Gallery()
 {
 	cv::namedWindow("Gallery", CV_WINDOW_NORMAL);
-	this->fileList = this->getFileList();
+	this->initializeFileList();
 	this->fileListIter = this->fileList.begin();
 	this->picture = cv::imread(*fileListIter, CV_LOAD_IMAGE_COLOR);
 	Gallery::viewPicture();
 }
-
 
 Gallery::~Gallery()
 {
@@ -19,33 +17,30 @@ Gallery::~Gallery()
 
 void Gallery::viewPicture()
 {
-	cv::imshow("Gallery", picture);
+	cv::imshow("Gallery", this->picture);
 }
 
-std::vector<std::string> Gallery::getFileList()
+void Gallery::initializeFileList()
 {
-	std::vector<std::string> m_file_list;
 	HANDLE hFind;
 	WIN32_FIND_DATA FindFileData;
 	hFind = FindFirstFile(path, &FindFileData);
 	if (hFind != INVALID_HANDLE_VALUE) {
 		do {
 			std::wstring filePath = std::wstring(path);
-			filePath.pop_back();
+			filePath.pop_back(); //kasuje gwiazdkê ze œcie¿ki
 			std::wstring fileNameWString = filePath + FindFileData.cFileName;
 			std::string fileName(fileNameWString.begin(), fileNameWString.end());
-			m_file_list.push_back(fileName);
+			this->fileList.push_back(fileName);
 		} while (FindNextFile(hFind, &FindFileData));
 	}
 	FindClose(hFind);
-	for (int i = 0; i < 2; i++)
+	for (int i = 0; i < 2; i++) //usuwa dwa pierwsze elementy z listy {'.' i '..'}
 	{
-		if (!m_file_list.empty() &&
-			(m_file_list.front().back() == '.')) {
-			m_file_list.erase(m_file_list.begin());
+		if (!this->fileList.empty() && this->fileList.front().back() == '.') {
+			this->fileList.erase(this->fileList.begin());
 		}
 	}
-	return m_file_list;
 }
 
 void Gallery::changePicture(bool direction)
@@ -59,7 +54,7 @@ void Gallery::changePicture(bool direction)
 		}
 	}
 	else {
-		if (this->fileListIter != this->fileList.begin())	{
+		if (this->fileListIter != this->fileList.begin()) {
 			this->fileListIter = std::prev(this->fileListIter);
 		}
 		else {
@@ -70,12 +65,36 @@ void Gallery::changePicture(bool direction)
 	this->viewPicture();
 }
 
-void Gallery::zoomPicture()
+void Gallery::zoomPicture(int percent)
 {
+	this->zoomPic.imgOrginal = cv::imread(*this->fileListIter, CV_LOAD_IMAGE_COLOR);
+	this->zoomPic.percent = percent;
+	this->zoomPic.xPos = this->zoomPic.imgOrginal.cols / 2;
+	this->zoomPic.yPos = this->zoomPic.imgOrginal.rows / 2;
+	this->zoomPic.sizeX = this->zoomPic.imgOrginal.cols / this->zoomPic.percent;
+	this->zoomPic.sizeY = this->zoomPic.imgOrginal.rows / this->zoomPic.percent;
+	this->updateZoomPic();
 }
 
-void Gallery::moveZoomWindow(double xDirection, double yDirection)
+void Gallery::updateZoomPic() {
+	cv::Rect roi(this->zoomPic.xPos - this->zoomPic.sizeX / 2,
+		this->zoomPic.yPos - this->zoomPic.sizeY / 2,
+		this->zoomPic.sizeX, this->zoomPic.sizeY);
+	this->picture = this->zoomPic.imgOrginal(roi);
+	this->viewPicture();
+}
+
+void Gallery::moveZoomWindow(int xDirection, int yDirection)
 {
+	if (this->zoomPic.xPos + xDirection + this->zoomPic.sizeX / 2 >= this->zoomPic.imgOrginal.cols ||
+		this->zoomPic.xPos + xDirection - this->zoomPic.sizeX / 2 < 0 ||
+		this->zoomPic.yPos + yDirection + this->zoomPic.sizeY / 2 >= this->zoomPic.imgOrginal.rows ||
+		this->zoomPic.yPos + yDirection - this->zoomPic.sizeY / 2 < 0) {
+		return;
+	}
+	this->zoomPic.xPos += xDirection;
+	this->zoomPic.yPos += yDirection;
+	this->updateZoomPic();
 }
 
 void Gallery::printFileList()

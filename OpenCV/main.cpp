@@ -30,9 +30,33 @@ int main(int, char**)
 			//l - lewo
 			galeria.changePicture(false);
 		}
-		else if (keyPressed == 112)
-		{ //p - prawo
+		else if (keyPressed == 112) { 
+			//p - prawo
 			galeria.changePicture(true);
+		}
+		else if (keyPressed == 122) {
+			//z -przybliz
+			galeria.zoomPicture(2);
+		}
+		else if (keyPressed == 121) {
+			//y - przybliz bardziej ;d
+			galeria.zoomPicture(4);
+		}
+		else if (keyPressed == 119) {
+			//w - przesuñ w górê
+			galeria.moveZoomWindow(0, -50);
+		}
+		else if (keyPressed == 115) {
+			//s - przesuñ w dó³
+			galeria.moveZoomWindow(0, 50);
+		}
+		else if (keyPressed == 100) {
+			// d - przesuñ w prawo
+			galeria.moveZoomWindow(50,0);
+		}
+		else if (keyPressed == 97) {
+			//a - przesuñ w lewo
+			galeria.moveZoomWindow(-50, 0);
 		}
 	} while (keyPressed != 27);
 	return 0;

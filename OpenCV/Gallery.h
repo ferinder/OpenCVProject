@@ -3,11 +3,20 @@
 #include <string>
 #include <vector>
 #include <Windows.h>
-#include <filesystem>
+
+struct Zoom {
+	cv::Mat imgOrginal;
+	int percent;
+	int xPos;
+	int yPos;
+	int sizeX;
+	int sizeY;
+};
 
 class Gallery
 {
 private:
+	Zoom zoomPic;
 	cv::Mat picture;
 	std::vector<std::string> fileList;
 	std::vector<std::string>::iterator fileListIter;
@@ -16,11 +25,11 @@ public:
 	Gallery();
 	~Gallery();
 	void changePicture(bool direction);
-	void zoomPicture();
-	void moveZoomWindow(double xDirection, double yDirection);
-
+	void zoomPicture(int percent);
+	void moveZoomWindow(int xDirection, int yDirection);
 	void printFileList();
 private:
 	void viewPicture();
-	std::vector<std::string> getFileList();
+	void initializeFileList();
+	void updateZoomPic();
 };
