@@ -19,7 +19,7 @@ public:
 	void zoomPicture();
 	void moveZoomWindow(double xDirection, double yDirection);
 public:
-	void updatePicture();
+	void viewPicture();
 	std::vector<std::string> getFileList();
 };
 //

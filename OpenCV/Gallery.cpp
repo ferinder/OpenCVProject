@@ -7,18 +7,29 @@ Gallery::Gallery()
 	cv::namedWindow("Gallery", CV_WINDOW_NORMAL);
 	fileList = Gallery::getFileList();
 	fileListIter = fileList.begin();
-	Gallery::updatePicture();
+	picture = cv::imread(*fileListIter, CV_LOAD_IMAGE_COLOR);
+	Gallery::viewPicture();
 }
 
 
 Gallery::~Gallery()
 {
 	cv::destroyWindow("Gallery");
+
+	std::vector<int> v;
+	for (int i = -3; i < 9; ++i) {
+		v.push_back(i);
+	}
+	// wypisujemy co drugi element wektora za pomoc¹ pêtli u¿ywaj¹cej iteratorów
+	std::cout << "vector: ";
+	for (auto pos = v.begin(); pos < v.cend() && std::next(pos) < v.cend(); pos += 2) {
+		std::cout << *pos << ' ';
+	}
+	std::cout << std::endl << std::endl;
 }
 
-void Gallery::updatePicture()
+void Gallery::viewPicture()
 {
-	picture = cv::imread(*fileListIter, CV_LOAD_IMAGE_COLOR);
 	cv::imshow("Gallery", picture);
 }
 
@@ -66,7 +77,8 @@ void Gallery::changePicture(bool direction)
 			fileListIter = std::prev(fileList.end());
 		}
 	}
-	Gallery::updatePicture();
+	picture = cv::imread(*fileListIter, CV_LOAD_IMAGE_COLOR);
+	Gallery::viewPicture();
 }
 
 void Gallery::zoomPicture()
