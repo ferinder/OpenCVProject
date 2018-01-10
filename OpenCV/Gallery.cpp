@@ -3,21 +3,22 @@
 
 Gallery::Gallery()
 {
-	cv::namedWindow("Gallery", CV_WINDOW_NORMAL);
+	cv::namedWindow("Gallery2", CV_WINDOW_NORMAL);
 	initializeFileList();
 	fileListIter = fileList.begin();
 	picture = cv::imread(*fileListIter, CV_LOAD_IMAGE_COLOR);
 	Gallery::viewPicture();
+	//for (;;) if (cv::waitKey(30) >= 27)break;
 }
 
 Gallery::~Gallery()
 {
-	cv::destroyWindow("Gallery");
+	//cv::destroyWindow("Gallery");
 }
 
 void Gallery::viewPicture()
 {
-	cv::imshow("Gallery", picture);
+	cv::imshow("Gallery2", picture);
 }
 
 void Gallery::initializeFileList()
@@ -99,7 +100,7 @@ void Gallery::moveZoomWindow(int xDirection, int yDirection)
 
 void Gallery::printFileList()
 {
-	for (auto it : this->fileList) {
+	for (auto it : fileList) {
 		std::cout << it << std::endl;
 	}
 }

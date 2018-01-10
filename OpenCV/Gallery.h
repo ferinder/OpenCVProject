@@ -4,6 +4,8 @@
 #include <vector>
 #include <Windows.h>
 
+//TODO: dodaæ obrót zdjêcia 
+
 struct Zoom {
 	cv::Mat imgOrginal;
 	int percent;
@@ -28,8 +30,9 @@ public:
 	void zoomPicture(int percent);
 	void moveZoomWindow(int xDirection, int yDirection);
 	void printFileList();
-private:
+
 	void viewPicture();
+private:
 	void initializeFileList();
 	void updateZoomPic();
 };

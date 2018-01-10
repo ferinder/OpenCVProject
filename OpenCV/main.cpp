@@ -1,12 +1,34 @@
 #include "opencv2/opencv.hpp"
 #include "Gallery.h"
 #include "GestCapturer.h"
+
 using namespace cv;
 
 int main(int, char**)
 {
-	GestCapturer cap = GestCapturer::GestCapturer();
-	
+	GestCapturer cap = GestCapturer();
+	/*
+	{
+
+		cv::namedWindow("org");
+		cv::Mat hand = cv::imread("../Ziemniaki.jpg");
+		cv:imshow("org", hand);
+		cv::cvtColor(hand, hand, cv::COLOR_BGR2HSV);
+		cv::namedWindow("hue");
+		cv::namedWindow("sat");
+		cv::namedWindow("val");
+
+		std::vector<cv::Mat> output;
+		cv::split(hand, output);
+
+		cv::imshow("hue", output[0]);
+		cv::imshow("sat", output[1]);
+
+		cv::imshow("val", output[2]);
+		cv::Mat hue = output[0];
+		cv::waitKey(0);
+
+	}*/
 	//VideoCapture cap(0); // open the default camera
 	//if (!cap.isOpened())  // check if we succeeded
 	//	return -1;
