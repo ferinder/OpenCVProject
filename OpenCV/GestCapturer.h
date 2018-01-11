@@ -1,14 +1,13 @@
 #pragma once
 #include "opencv2\opencv.hpp"
-
 #include <opencv2/highgui/highgui.hpp>
-
 #include <stdio.h>
-
 #include <vector>
-#include "Gallery.h"
 #include <iterator>
 #include <algorithm>
+
+#include "Gallery.h"
+#include "HandTracker.h"
 
 struct Hand {
 	int pos_X;
@@ -28,6 +27,8 @@ private:
 	cv::Mat frame;
 	cv::VideoCapture capturer;
 	Hand hand;
+	HandTracker tracker;
+	cv::Ptr<cv::BackgroundSubtractorMOG2> bgS = cv::createBackgroundSubtractorMOG2(15,50,false);
 public:
 	GestCapturer();
 	~GestCapturer();

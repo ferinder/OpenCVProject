@@ -8,25 +8,22 @@ GestCapturer::GestCapturer()
 	cv::namedWindow("Camera");
 	capturer = cv::VideoCapture(0);
 	galeria = Gallery();
-	//galeria.viewPicture();
-	hand.hueHist = std::vector<int>(256, 0); 
-	getHandPosition();
-	cv::Mat HSV_frame;
+	tracker = HandTracker();
 	capturer >> frame;
-	cv::cvtColor(frame, HSV_frame, cv::COLOR_BGR2HSV);
-	for (;;)
-	{
-		capturer >> frame; // get a new frame from camera
-		cv::cvtColor(frame, frame, cv::COLOR_BGR2HSV);
-		std::vector<cv::Mat> output;
-		cv::split(frame, output);
-		cv::threshold(output[0], output[0], hand.hue + 10, 255, cv::THRESH_TOZERO_INV);
-		cv::threshold(output[0], output[0], hand.hue - 10, 255, cv::THRESH_BINARY);
-		cv::GaussianBlur(output[0], frame, cv::Size(7, 7), 1.5, 1.5);
-		//cv::Canny(frame, frame, 0, 30, 3);
-		//cv::namedWindow("image");
+	for (;;) {
+		capturer >> frame; 
 		cv::imshow("Camera", frame);
 		if (cv::waitKey(30) >= 0) break;
+	}
+	tracker.initTracker(frame, cv::selectROI(frame));
+	while(!(cv::waitKey(10) >= 0)) {
+		capturer >> frame;
+		tracker.updateTracker(frame);
+		cv::rectangle(frame, tracker.getROI(), cv::Scalar(255, 255, 255));
+		cv::Mat frame2;
+		cv::flip(frame, frame2, 1);
+		cv::imshow("Camera", frame2);
+		
 	}
 }
 
