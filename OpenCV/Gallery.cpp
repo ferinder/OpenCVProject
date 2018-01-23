@@ -64,11 +64,17 @@ void Gallery::changePicture(bool direction)
 		}
 	}
 	picture = cv::imread(*fileListIter, CV_LOAD_IMAGE_COLOR);
+	zoomPic.imgOrginal = picture;
+	zoomPic.percent = 1;
 	viewPicture();
+
 }
 
 void Gallery::zoomPicture(int percent)
 {
+	if (percent == 0) return;
+	if (percent < 0) percent = 1;
+
 	zoomPic.imgOrginal = cv::imread(*fileListIter, CV_LOAD_IMAGE_COLOR);
 	zoomPic.percent = percent;
 	zoomPic.xPos = zoomPic.imgOrginal.cols / 2;
@@ -88,6 +94,7 @@ void Gallery::updateZoomPic() {
 
 void Gallery::moveZoomWindow(int xDirection, int yDirection)
 {
+	if (zoomPic.percent == 1) return;
 	if (zoomPic.xPos + xDirection + zoomPic.sizeX / 2 >= zoomPic.imgOrginal.cols ||
 		zoomPic.xPos + xDirection - zoomPic.sizeX / 2 < 0 ||
 		zoomPic.yPos + yDirection + zoomPic.sizeY / 2 >= zoomPic.imgOrginal.rows ||

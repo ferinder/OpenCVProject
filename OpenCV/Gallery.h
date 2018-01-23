@@ -30,7 +30,6 @@ public:
 	void zoomPicture(int percent);
 	void moveZoomWindow(int xDirection, int yDirection);
 	void printFileList();
-
 	void viewPicture();
 private:
 	void initializeFileList();

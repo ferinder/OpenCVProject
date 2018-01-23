@@ -11,10 +11,12 @@ private:
 	cv::Ptr<cv::Tracker> tracker;
 	cv::Rect2d ROI;
 	std::pair<int, int> center;
+	int ROIHeight;
 	std::deque<std::pair<int, int>> movement;
-public:
+	std::deque<int> scaleDeq;
 	int Xmove;
 	int Ymove;
+	int scale;
 	
 public:
 	HandTracker();
@@ -22,5 +24,9 @@ public:
 	void updateTracker(cv::Mat frame);
 	void initTracker(cv::Mat frame, cv::Rect2d roi);
 	cv::Rect getROI();
+	int getXmove();
+	int getYmove();
+	int getScale();
+	void clearMovement();
 };
 
