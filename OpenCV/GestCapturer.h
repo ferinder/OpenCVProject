@@ -28,7 +28,6 @@ private:
 	cv::VideoCapture capturer;
 	Hand hand;
 	HandTracker tracker;
-	cv::Ptr<cv::BackgroundSubtractorMOG2> bgS = cv::createBackgroundSubtractorMOG2(15,50,false);
 public:
 	GestCapturer();
 	~GestCapturer();

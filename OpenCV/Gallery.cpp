@@ -5,6 +5,7 @@ Gallery::Gallery()
 {
 	cv::namedWindow("Gallery2", CV_WINDOW_NORMAL);
 	initializeFileList();
+	printFileList();
 	fileListIter = fileList.begin();
 	picture = cv::imread(*fileListIter, CV_LOAD_IMAGE_COLOR);
 	Gallery::viewPicture();
