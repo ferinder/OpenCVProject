@@ -1,42 +1,28 @@
 #pragma once
 #include "opencv2\opencv.hpp"
-
 #include <opencv2/highgui/highgui.hpp>
-
 #include <stdio.h>
-
 #include <vector>
-#include "Gallery.h"
 #include <iterator>
 #include <algorithm>
+#include <memory>
 
-struct Hand {
-	int pos_X;
-	int pos_Y;
-	int finger_count;
-	int starting_pos_X;
-	int starting_pos_Y;
-	int hue;
-	std::vector<int> hueHist;
-	cv::Mat img;
-};
+#include "Gallery.h"
+#include "HandTracker.h"
 
 class GestCapturer
 {
 private:
-	Gallery galeria;
+	std::shared_ptr<Gallery> galeria;
+	std::shared_ptr<HandTracker> tracker;
 	cv::Mat frame;
 	cv::VideoCapture capturer;
-	Hand hand;
 public:
 	GestCapturer();
 	~GestCapturer();
-
+	void doSomething();
 private:
-	void backgroudRemoval();
-	void getHandPosition();
 	void updateCameraView();
-	void setHandHue(cv::Mat ROI);
+	void initializeTracker();
+
 };
-
-
