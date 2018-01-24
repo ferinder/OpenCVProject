@@ -9,12 +9,11 @@ Gallery::Gallery()
 	fileListIter = fileList.begin();
 	picture = cv::imread(*fileListIter, CV_LOAD_IMAGE_COLOR);
 	Gallery::viewPicture();
-	//for (;;) if (cv::waitKey(30) >= 27)break;
 }
 
 Gallery::~Gallery()
 {
-	//cv::destroyWindow("Gallery");
+	cv::destroyWindow("Gallery");
 }
 
 void Gallery::viewPicture()

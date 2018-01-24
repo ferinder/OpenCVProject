@@ -48,15 +48,16 @@ void HandTracker::updateTracker(cv::Mat frame)
 	{
 		scale += it;
 	}
-//	std::cout << "X:" << Xmove << "\t Y:" << Ymove << "\t Scale:" << scale<< std::endl;
 	
 }
 
 void HandTracker::initTracker(cv::Mat frame, cv::Rect2d roi)
 {
 	tracker->init(frame, roi);
-//	std::cout << "tutaj jestem";
 	ROI = roi;
+	ROIHeight = ROI.height;
+	center.first = (ROI.x + ROI.width) / 2;
+	center.second = (ROI.y + ROI.height) / 2;
 }
 
 cv::Rect HandTracker::getROI()

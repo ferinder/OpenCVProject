@@ -57,7 +57,8 @@ void GestCapturer::initializeTracker() {
 	tracker->initTracker(frame, cv::selectROI(frame));
 	cv::Mat object;
 	object = frame(tracker->getROI());
-	cv::imshow("object", object);
+	cv::FileStorage fs("ziemniak.xml", cv::FileStorage::WRITE);
+	fs << "object" << object;
 }
 
 void GestCapturer::updateCameraView()
